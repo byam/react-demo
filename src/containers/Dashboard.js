@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PostDetails from "../components/postDetails/PostDetails";
 import PostEdit from "../components/postEdit/PostEdit";
+import PostNew from "../components/postNew/postNew";
 import Posts from "./posts/Posts";
 
 function Dashboard() {
@@ -12,11 +13,13 @@ function Dashboard() {
 
   const [selectedPost, setSelectedPost] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   const postClick = (post) => {
     console.log("postClick! " + post.id);
     setSelectedPost(post);
     setIsEditing(false);
+    setIsAdding(false);
   };
 
   const editClick = (id) => {
@@ -31,16 +34,39 @@ function Dashboard() {
     setSelectedPost(null);
   };
 
-  const saveClick = (post) => {
-    console.log("saveClick! " + post.id);
+  const editSaveClick = (post) => {
+    console.log("editSaveClick! " + post.id);
     const newPosts = postsState.map((p) => (p.id === post.id ? post : p));
     setPostsState(newPosts);
     setIsEditing(false);
   };
 
+  const addClick = () => {
+    console.log("addClick! ");
+    setIsAdding(true);
+    setSelectedPost(null);
+  };
+
+  const newSaveClick = (post) => {
+    console.log("newSaveClick! " + post.id);
+    const newPosts = [...postsState];
+    newPosts.push(post);
+    setPostsState(newPosts);
+    setIsAdding(false);
+  };
+
   return (
     <div>
       <Posts postsState={postsState} postClick={postClick} />
+
+      {!isAdding && <button onClick={() => addClick()}>Add Post</button>}
+
+      {isAdding && (
+        <PostNew
+          newId={postsState[postsState.length - 1].id + 1}
+          newSaveClick={newSaveClick}
+        />
+      )}
 
       {selectedPost && isEditing === false && (
         <PostDetails
@@ -50,7 +76,9 @@ function Dashboard() {
         />
       )}
 
-      {isEditing && <PostEdit post={selectedPost} saveClick={saveClick} />}
+      {isEditing && (
+        <PostEdit post={selectedPost} editSaveClick={editSaveClick} />
+      )}
     </div>
   );
 }

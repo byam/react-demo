@@ -1,16 +1,16 @@
 import { useState } from "react";
 
-function PostEdit(props) {
+function PostNew(props) {
   const [post, setPost] = useState({
-    id: props.post.id,
-    title: props.post.title,
-    author: props.post.author,
-    content: props.post.content,
+    id: props.newId,
+    title: "",
+    author: "",
+    content: "",
   });
 
   return (
     <div>
-      <h1>Edit Post</h1>
+      <h1>New Post</h1>
       <p>Id : {post.id}</p>
       Title:{" "}
       <input
@@ -44,7 +44,7 @@ function PostEdit(props) {
       ></input>
       <button
         onClick={() => {
-          props.editSaveClick(post);
+          props.newSaveClick(post);
         }}
       >
         Save
@@ -53,4 +53,4 @@ function PostEdit(props) {
   );
 }
 
-export default PostEdit;
+export default PostNew;
