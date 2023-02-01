@@ -2,7 +2,6 @@ import { useState } from "react";
 
 function PostNew(props) {
   const [post, setPost] = useState({
-    id: props.newId,
     title: "",
     author: "",
     content: "",
@@ -11,7 +10,6 @@ function PostNew(props) {
   return (
     <div>
       <h1>New Post</h1>
-      <p>Id : {post.id}</p>
       Title:{" "}
       <input
         type="text"

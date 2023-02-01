@@ -6,6 +6,7 @@ function PostEdit(props) {
     title: props.post.title,
     author: props.post.author,
     content: props.post.content,
+    comments: props.post.comments,
   });
 
   return (
