@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import PostDetails from "../components/postDetails/PostDetails";
 import PostEdit from "../components/postEdit/PostEdit";
 import PostNew from "../components/postNew/postNew";
+import { SelectedPostContext } from "../context/SelectedPost";
 import Posts from "./posts/Posts";
 
 function Dashboard() {
-  const [loading, setLoading] = useState(false);
   const [postsState, setPostsState] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -51,9 +51,9 @@ function Dashboard() {
       });
   };
 
-  const addPost = (post) => {
+  const addPost = (data) => {
     axios
-      .post(`http://localhost:8080/api/v1/posts`, post)
+      .post(`http://localhost:8080/api/v1/posts`, data)
       .then((response) => {
         console.log("Add post");
         setFlag(setFlag + 1);
@@ -101,12 +101,8 @@ function Dashboard() {
 
   useEffect(() => {
     fetchPosts();
-    setLoading(false);
   }, [flag]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div>
@@ -114,21 +110,17 @@ function Dashboard() {
 
       {!isAdding && <button onClick={() => addClick()}>Add Post</button>}
 
-      {isAdding && (
-        <PostNew newSaveClick={newSaveClick}/>
-      )}
+      {isAdding && <PostNew newSaveClick={newSaveClick} />}
 
-      {selectedPost && isEditing === false && (
-        <PostDetails
-          post={selectedPost}
-          editClick={editClick}
-          deleteClick={deleteClick}
-        />
-      )}
+      <SelectedPostContext.Provider value={selectedPost}>
+        {selectedPost && isEditing === false && (
+          <PostDetails editClick={editClick} deleteClick={deleteClick} />
+        )}
 
-      {isEditing && (
-        <PostEdit post={selectedPost} editSaveClick={editSaveClick} />
-      )}
+        {isEditing && (
+          <PostEdit editSaveClick={editSaveClick} />
+        )}
+      </SelectedPostContext.Provider>
     </div>
   );
 }

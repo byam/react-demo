@@ -1,48 +1,38 @@
-import { useState } from "react";
+import { useRef } from "react";
 
 function PostNew(props) {
-  const [post, setPost] = useState({
-    title: "",
-    author: "",
-    content: "",
-  });
+  const newPostRef = useRef();
 
   return (
     <div>
       <h1>New Post</h1>
-      Title:{" "}
-      <input
-        type="text"
-        value={post.title}
-        name={"title"}
-        label={"title"}
-        onChange={(event) => {
-          setPost({ ...post, title: event.target.value });
-        }}
-      ></input>
-      Author:{" "}
-      <input
-        type="text"
-        value={post.author}
-        name={"author"}
-        label={"author"}
-        onChange={(event) => {
-          setPost({ ...post, author: event.target.value });
-        }}
-      ></input>
-      Content:{" "}
-      <input
-        type="text"
-        value={post.content}
-        name={"content"}
-        label={"content"}
-        onChange={(event) => {
-          setPost({ ...post, content: event.target.value });
-        }}
-      ></input>
+      <form ref={newPostRef}>
+        Title:{" "}
+        <input
+          type="text"
+          name={"title"}
+          label={"title"}
+        ></input>
+        Author:{" "}
+        <input
+          type="text"
+          name={"author"}
+          label={"author"}
+        ></input>
+        Content:{" "}
+        <input
+          type="text"
+          name={"content"}
+          label={"content"}
+        ></input>
+      </form>
       <button
         onClick={() => {
-          props.newSaveClick(post);
+          props.newSaveClick({
+              title: newPostRef.current['title'].value,
+              author: newPostRef.current['author'].value,
+              content: newPostRef.current['content'].value,
+          });
         }}
       >
         Save

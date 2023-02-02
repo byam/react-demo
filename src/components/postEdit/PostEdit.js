@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SelectedPostContext } from "../../context/SelectedPost";
 
 function PostEdit(props) {
+  const selectedPost = useContext(SelectedPostContext);
+
   const [post, setPost] = useState({
-    id: props.post.id,
-    title: props.post.title,
-    author: props.post.author,
-    content: props.post.content,
-    comments: props.post.comments,
+    id: selectedPost.id,
+    title: selectedPost.title,
+    author: selectedPost.author,
+    content: selectedPost.content,
+    comments: selectedPost.comments,
   });
 
   return (
